@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Star Wars - Express</title>
+  <!-- Latest compiled and minified CSS & JS -->
+  <link rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="jumbotron">
+      <h1>Guy Fieri Flavortown</h1>
+      <h3>We're takin' you on a road rockin' trip down to Flavortown, where the gravitational force of bacon warps the laws of space and time</h3>
+      <hr>
+      <a href="./reservations"><button class="btn btn-danger btn-lg"><span class="fa fa-plus"></span> Add Reservation</button></a>
+      <a href="/api/characters"><button class="btn btn-danger btn-lg"><span
+            class="fa fa-eye"></span> View Reservations</button></a>
+    </div>
+    <div class="row">
+
+      <div class="col-12">
+<!-- 
+        <div class="card mb-4">
+          <div class="card-header">
+            <h3><strong>Character Search</strong></h3>
+          </div>
+          <div class="card-body">
+            <input type="text" id="reservation-search" class="form-control">
+            <br>
+            <div class="text-right">
+              <button type="submit" class="btn btn-primary btn-md" id="search-btn"><span
+                  class="fa fa-search"></span> Find your Reservation</button>
+
+            </div>
+          </div>
+        </div> -->
+
+        <div class="card">
+          <div class="card-header">
+            <h3><strong>Current Reservations</strong></h3>
+          </div>
+          <div class="card-body">
+            <h2 id="name"></h2>
+            <div id="stats">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3><strong>Current Waitlist</strong></h3>
+          </div>
+          <div class="card-body">
+            <h2 id="name"></h2>
+            <div id="statsWait">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    // $("#search-btn").on("click", function() {
+      // var searchReservation = $("#reservation-search").val().trim();
+      // searchReservation = searchReservation.replace(/\s+/g, "").toLowerCase();
+    $.get("/api/reservation").then(reservation => {
+        // console.log(reservation);
+
+        let allTables ='';
+        reservation.forEach(reservation => {
+          const customerName = reservation.custName;
+          const customerID = reservation.custID;
+          let tableDiv = `
+          <h3><strong>Name:</strong> ${customerName}</h3>
+          <h3><strong>Reservation ID:</strong> ${customerID}</h3>`;
+          allTables += tableDiv;
+          // console.log(reservation);
+          // console.log(tableDiv);
+        });
+        $("#stats").html(allTables);
+    });
+
+    $.get("/api/waitlist").then(waitList => {
+        console.log(waitList);
+
+        let allTables ='';
+        waitList.forEach(waitList => {
+          const customerName = waitList.custName;
+          const customerID = waitList.custID;
+          let tableDiv = `
+          <h3><strong>Name:</strong> ${customerName}</h3>
+          <h3><strong>waitList ID:</strong> ${customerID}</h3>`;
+          allTables += tableDiv;
+          console.log(waitList);
+          console.log(tableDiv);
+        });
+        $("#statsWait").html(allTables);
+    });
+
+
+  </script>
+</body>
+
+</html>
